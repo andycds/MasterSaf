@@ -1,0 +1,32 @@
+Prezado,
+ 
+Gostaríamos de propor um teste com uma situação hipotética que tem o objetivo avaliar suas habilidades de Entendimento, Comunicação e Solução de problemas práticos de programação. Pedimos que o analise e responda com o seu tempo estimado de entrega, caso tenha interesse.
+O código-fonte e as instruções para compilação, instalação e execução devem ser enviadas dentro desse prazo para  rogerio.franzoni@mastersaf.com.br .
+ A linguagem deve ser Java mas você está livre para definir os componentes, arquitetura e lógica do programa. Usaremos o teste em entrevista onde serão feitas perguntas sobre o que foi feito e possíveis alterações de cenários funcionais e técnicos.
+ 
+Problema:
+ 
+Em empresas de serviços há a necessidade de a cada mês seja feita a arrecadação do ISS (Imposto Sobre Serviços). Essa arrecadação ocorre através de pagamento de guia recolhimento no dia 10 referente às notas que foram emitidas no mês anterior. O cálculo do ISS de uma nota é feito aplicando-se uma alíquota ao valor total da nota que varia de acordo com o tipo do serviço prestado.
+ 
+Considerando que uma nota fiscal simplificadamente possa ser representada por um XML na forma:
+ 
+<nota>
+         <emitente_cnpj></emitente_cnpj>
+         <numero>1</numero>
+         <data_emissao>2009-03-06</data_emissao>
+         <codigo_servico>1001</codigo_servico>
+         <valor_total>500.00</valor_total>
+</nota>
+ 
+E que as alíquotas de acordo com os códigos de serviços são:
+ 
+Código / Alíquota
+1001 / 5%
+1002 / 5%
+1003 / 5%
+2001 / 3%
+2002 / 4%
+ 
+Pedimos que faça um programa e que calcule os valores a serem arrecadados em cada mês por emitente a partir de dos dados de notas fiscais que seguem no arquivo em anexo. Você deve fornecer o resultado num arquivo XML cuja estrutura fica livre para definir mas que contenha claramente identificados os campos <emitente_cnpj>, <data_recolhimento>, <valor_iss>. Esse programa pode ser usado por um arrecadador (prefeitura) para emitir os guias das empresas e imagine que a cada mês poderá vir um arquivo semelhante para processamento.
+ 
+Cordialmente,

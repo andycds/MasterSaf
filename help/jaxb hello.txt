@@ -1,0 +1,88 @@
+1.3 Hello World
+
+We'll stick with the tradition and use a sort of "Hello World" XML document to illustrate the typical scenario for creating the Java classes and their use to marshal a document. We'll not discuss any details in this subsection; it's just here to give you the overall picture.
+
+The XML Schema on hello.xsd defines the structure of our document, which is to contain a series of salutations, each of which contains a greeting (such as "Hello world") and an attribute for registering the language of the salutation.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0">
+
+<xsd:element name="Greetings" type="GreetingListType"/>
+
+<xsd:complexType name="GreetingListType">
+  <xsd:sequence>
+    <xsd:element name="Greeting" type="GreetingType"
+                 maxOccurs="unbounded"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="GreetingType">
+  <xsd:sequence>
+    <xsd:element name="Text" type="xsd:string"/>
+  </xsd:sequence>
+  <xsd:attribute name="language" type="xsd:language"/>
+</xsd:complexType>
+
+</xsd:schema>
+
+Now we can call the JAXB schema compiler, defining the package name hello for the generated classes.
+
+xjc -p hello hello.xsd
+
+This generates several classes in the subdirectory hello. The class Hello shows how to use them.
+
+import java.util.*;
+import javax.xml.bind.*;
+import hello.*;
+
+public class Hello {
+
+    private ObjectFactory of;
+    private GreetingListType grList;
+
+    public Hello(){
+        of = new ObjectFactory();
+        grList = of.createGreetingListType();
+    }
+
+    public void make( String t, String l ){
+        GreetingType g = of.createGreetingType();
+        g.setText( t );
+        g.setLanguage( l );
+        grList.getGreeting().add( g );
+    }
+
+    public void marshal() {
+        try {
+            JAXBElement<GreetingListType> gl =
+                of.createGreetings( grList );
+            JAXBContext jc = JAXBContext.newInstance( "hello" );
+            Marshaller m = jc.createMarshaller();
+            m.marshal( gl, System.out );
+        } catch( JAXBException jbe ){
+            // ...
+        }
+    }
+}
+
+The constructor uses a method from the object factory to create an object of the document's top level XML element type, i.e., GreetingListType. The make method adds another salutation with its text element and the language attribute. Finally, with a call to marshal, the list is wrapped in its XML element, and the resulting XML document is written to the standard output stream. Here's a sequence of these calls:
+
+Hello h = new Hello();
+h.make( "Bonjour, madame", "fr" ); 
+h.make( "Hey, you", "en" ); 
+h.marshal();
+
+The output is shown below, formatted, for better readability.
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Greetings>
+  <Greeting language="fr">
+    <Text>Bonjour, madame</Text>
+  </Greeting>
+  <Greeting language="en">
+    <Text>Hey, you</Text>
+  </Greeting>
+</Greetings>
+
